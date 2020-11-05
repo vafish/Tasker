@@ -11,17 +11,40 @@ import CoreData
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
-
-class TasksTableViewController: UITableViewController {
+protocol AddSuperHeroDelegate: AnyObject {
+    func addSuperHero(newHero: SuperHero) -> Bool
+}
+class TasksTableViewController: UITableViewController, DatabaseListener, UISearchResultsUpdating {
     var handle: AuthStateDidChangeListenerHandle?
     @IBOutlet weak var imageView: UIImageView!
     var managedObjectContext: NSManagedObjectContext?
+    let SECTION_HEROES = 0
+    let SECTION_INFO = 1
+    let CELL_HERO = "taskCell"
+    let CELL_INFO = "totalHeroesCell"
+    
+    var allHeroes: [SuperHero] = []
+    var filteredHeroes: [SuperHero] = []
+    weak var superHeroDelegate: AddSuperHeroDelegate?
+    var databaseController: DatabaseProtocol?
+    var listenerType: ListenerType = .all
 
     override func viewDidLoad() {
         super.viewDidLoad()
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         managedObjectContext = appDelegate?.persistantContainer?.viewContext
+        databaseController = FirebaseController()
 
+        filteredHeroes = allHeroes
+        
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Heroes"
+        navigationItem.searchController = searchController
+        
+        // This view controller decides how the search controller is presented
+        definesPresentationContext = true
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -39,9 +62,32 @@ class TasksTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return filteredHeroes.count
     }
-
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text?.lowercased() else {
+            return
+        }
+        
+        if searchText.count > 0 {
+            filteredHeroes = allHeroes.filter({ (hero: SuperHero) -> Bool in
+                return hero.name.lowercased().contains(searchText) ?? false
+            })
+        } else {
+            filteredHeroes = allHeroes
+        }
+        
+        tableView.reloadData()
+    }
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+      if editingStyle == .delete {
+        print("Deleted")
+        databaseController?.deleteSuperHero(hero: filteredHeroes[indexPath.row])
+        self.filteredHeroes.remove(at: indexPath.row)
+        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        
+      }
+    }
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
@@ -106,8 +152,10 @@ class TasksTableViewController: UITableViewController {
          navigationController?.popViewController(animated: true)
 
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        databaseController?.addListener(listener: self)
         handle = Auth.auth().addStateDidChangeListener{ (auth, user) in
             guard let userID = Auth.auth().currentUser?.uid else {
              return
@@ -149,7 +197,48 @@ class TasksTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         Auth.auth().removeStateDidChangeListener(handle!)
+        databaseController?.addListener(listener: self)
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == SECTION_HEROES {
+            let heroCell = tableView.dequeueReusableCell(withIdentifier: CELL_HERO,
+                for: indexPath) as! TaskTableViewCell
+            let hero = filteredHeroes[indexPath.row]
+            
+            heroCell.taskNameTextField.text = hero.name
+            heroCell.dueDateTextField.text = hero.abilities
+            
+            return heroCell
+        }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: CELL_INFO, for: indexPath)
+        cell.textLabel?.text = "\(allHeroes.count) heroes in the database"
+        cell.textLabel?.textColor = .secondaryLabel
+        cell.selectionStyle = .none
+        return cell
+    }
+
+    // MARK: - Database Listener
+    func onHeroListChange(change: DatabaseChange, heroes: [SuperHero]) {
+        allHeroes = heroes
+        updateSearchResults(for: navigationItem.searchController!)
+    }
+    
+    func onTeamChange(change: DatabaseChange, teamHeroes: [SuperHero]) {
+        // Do nothing not called
+    }
+    
+    func displayMessage(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message,
+            preferredStyle: UIAlertController.Style.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss",
+            style: UIAlertAction.Style.default,handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
         
+    
+    
+    
 
 }

@@ -68,7 +68,7 @@ class RegisterViewController: UIViewController {
             }
             
             let uid = Auth.auth().currentUser?.uid
-            let ref = Firestore.firestore().collection("users").document("\(String(describing: uid)))")
+            let ref = Firestore.firestore().collection("users").document(uid!)
             if uid != nil{
                 ref.setData([
                     "email": self.emailTextField.text!,

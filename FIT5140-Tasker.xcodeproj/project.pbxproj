@@ -21,6 +21,12 @@
 		3148E112254AECF20058FADD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3148E111254AECF20058FADD /* GoogleService-Info.plist */; };
 		314A420B255043C500FCDC17 /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A420A255043C500FCDC17 /* TasksTableViewController.swift */; };
 		314DA2E0254EE6D80065819E /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314DA2DF254EE6D80065819E /* RegisterViewController.swift */; };
+		314E6C4C2551399500D85B1B /* CreateTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314E6C4B2551399500D85B1B /* CreateTaskViewController.swift */; };
+		314E6C4F25513E6C00D85B1B /* DatabaseProtocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314E6C4E25513E6C00D85B1B /* DatabaseProtocal.swift */; };
+		314E6C5425513E9E00D85B1B /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314E6C5325513E9E00D85B1B /* MulticastDelegate.swift */; };
+		314E6C5825513EBB00D85B1B /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314E6C5725513EBB00D85B1B /* FirebaseController.swift */; };
+		314E6C5B25513F0300D85B1B /* SuperHero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314E6C5A25513F0300D85B1B /* SuperHero.swift */; };
+		3186FE92255274180014ED72 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3186FE91255274180014ED72 /* TaskTableViewCell.swift */; };
 		31CEC73E254ACADE0000C9C9 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CEC73D254ACADE0000C9C9 /* AuthViewController.swift */; };
 		C247AD7CF37FF212C4D5DA83 /* Pods_FIT5140_Tasker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09D46E0C83FB0E10DF2A3CE6 /* Pods_FIT5140_Tasker.framework */; };
 /* End PBXBuildFile section */
@@ -44,6 +50,12 @@
 		3148E111254AECF20058FADD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		314A420A255043C500FCDC17 /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
 		314DA2DF254EE6D80065819E /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		314E6C4B2551399500D85B1B /* CreateTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTaskViewController.swift; sourceTree = "<group>"; };
+		314E6C4E25513E6C00D85B1B /* DatabaseProtocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocal.swift; sourceTree = "<group>"; };
+		314E6C5325513E9E00D85B1B /* MulticastDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
+		314E6C5725513EBB00D85B1B /* FirebaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
+		314E6C5A25513F0300D85B1B /* SuperHero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperHero.swift; sourceTree = "<group>"; };
+		3186FE91255274180014ED72 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		31CEC73D254ACADE0000C9C9 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		A03ECBA7743083B7CB9B5B00 /* Pods-FIT5140-Tasker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FIT5140-Tasker.release.xcconfig"; path = "Target Support Files/Pods-FIT5140-Tasker/Pods-FIT5140-Tasker.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -63,7 +75,6 @@
 		03F7A26C2470A7CF00E95C8E = {
 			isa = PBXGroup;
 			children = (
-				3148E111254AECF20058FADD /* GoogleService-Info.plist */,
 				03F7A2772470A7CF00E95C8E /* FIT5140-Tasker */,
 				03F7A2762470A7CF00E95C8E /* Products */,
 				1D267DF92CC24C3CC029FDFC /* Pods */,
@@ -82,6 +93,8 @@
 		03F7A2772470A7CF00E95C8E /* FIT5140-Tasker */ = {
 			isa = PBXGroup;
 			children = (
+				314E6C5225513E7C00D85B1B /* Database */,
+				3148E111254AECF20058FADD /* GoogleService-Info.plist */,
 				03F7A2B62470BBB400E95C8E /* DataModel */,
 				03F7A2782470A7CF00E95C8E /* AppDelegate.swift */,
 				03F7A27A2470A7CF00E95C8E /* SceneDelegate.swift */,
@@ -95,6 +108,9 @@
 				31CEC73D254ACADE0000C9C9 /* AuthViewController.swift */,
 				314DA2DF254EE6D80065819E /* RegisterViewController.swift */,
 				314A420A255043C500FCDC17 /* TasksTableViewController.swift */,
+				314E6C4B2551399500D85B1B /* CreateTaskViewController.swift */,
+				314E6C5A25513F0300D85B1B /* SuperHero.swift */,
+				3186FE91255274180014ED72 /* TaskTableViewCell.swift */,
 			);
 			path = "FIT5140-Tasker";
 			sourceTree = "<group>";
@@ -124,6 +140,16 @@
 				A03ECBA7743083B7CB9B5B00 /* Pods-FIT5140-Tasker.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		314E6C5225513E7C00D85B1B /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				314E6C4E25513E6C00D85B1B /* DatabaseProtocal.swift */,
+				314E6C5325513E9E00D85B1B /* MulticastDelegate.swift */,
+				314E6C5725513EBB00D85B1B /* FirebaseController.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,17 +268,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				314E6C5825513EBB00D85B1B /* FirebaseController.swift in Sources */,
 				03F7A2B42470BBA900E95C8E /* ImageMetaData+CoreDataClass.swift in Sources */,
 				314A420B255043C500FCDC17 /* TasksTableViewController.swift in Sources */,
 				314DA2E0254EE6D80065819E /* RegisterViewController.swift in Sources */,
 				03F7A2792470A7CF00E95C8E /* AppDelegate.swift in Sources */,
 				03F7A2BB2470BC0600E95C8E /* TaskerViewController.swift in Sources */,
 				31CEC73E254ACADE0000C9C9 /* AuthViewController.swift in Sources */,
+				314E6C5B25513F0300D85B1B /* SuperHero.swift in Sources */,
 				03F7A2B82470BBDD00E95C8E /* ImageCollectionViewCell.swift in Sources */,
+				314E6C4F25513E6C00D85B1B /* DatabaseProtocal.swift in Sources */,
 				03F7A27B2470A7CF00E95C8E /* SceneDelegate.swift in Sources */,
+				3186FE92255274180014ED72 /* TaskTableViewCell.swift in Sources */,
+				314E6C5425513E9E00D85B1B /* MulticastDelegate.swift in Sources */,
 				03F7A2B52470BBA900E95C8E /* ImageMetaData+CoreDataProperties.swift in Sources */,
 				03F7A2B12470BB5E00E95C8E /* ImageModel.xcdatamodeld in Sources */,
 				03F7A2BD2470BC1900E95C8E /* CameraViewController.swift in Sources */,
+				314E6C4C2551399500D85B1B /* CreateTaskViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,7 +430,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GTGWFU2KAU;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "FIT5140-Tasker/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -417,7 +449,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GTGWFU2KAU;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "FIT5140-Tasker/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

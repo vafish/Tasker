@@ -13,14 +13,12 @@ import FirebaseDatabase
 
 class AuthViewController: UIViewController {
     var handle: AuthStateDidChangeListenerHandle?
-    var ref: DatabaseReference!
-
-
+    
+    var databaseController:FirebaseController?
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference()
 
         // Do any additional setup after loading the view.
     }
@@ -34,10 +32,13 @@ class AuthViewController: UIViewController {
          return
          }
 
-         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-         if let error = error {
-         self.displayErrorMessage(error.localizedDescription)
-         }
+        Auth.auth().signIn(withEmail: email, password: password) { [self] (user, error) in
+            if let error = error {
+                self.displayErrorMessage(error.localizedDescription)
+                
+                
+                databaseController = FirebaseController()
+            }
          }
 
     }
