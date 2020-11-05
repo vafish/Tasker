@@ -28,7 +28,11 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, CLL
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
         mapView.delegate = self
         let s_controller =  storyboard!.instantiateViewController(withIdentifier: "locationTable") as! LocationsTableViewController
         s_controller.handleMapSearchDelegate = self
@@ -42,7 +46,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, CLL
       
         
         searchController?.hidesNavigationBarDuringPresentation = false
-        searchController?.dimsBackgroundDuringPresentation = true
+        
         
         definesPresentationContext = true
         s_controller.mapView =  mapView
@@ -186,9 +190,52 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, CLL
     
     
 
+    @objc func getDirections(){
+        if let selectedPin = selectedPin {
+            let mapItem = MKMapItem(placemark: selectedPin)
+            let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
+            mapItem.openInMaps(launchOptions: launchOptions)
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
+        if annotation is MKUserLocation {
+            //return nil so map view draws "blue dot" for standard user location
+            
+            return nil
+        }
+        let reuseId = "pin"
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+        pinView?.pinTintColor = UIColor.orange
+        pinView?.canShowCallout = true
+        let smallSquare = CGSize(width: 30, height: 30)
+        let button = UIButton(frame: CGRect(origin: CGPoint(x: 0,y: 0), size: smallSquare))
+        button.setBackgroundImage(UIImage(named: "car-icon"),for: .normal)
+        button.addTarget(self, action: #selector(SearchTableViewController.getDirections), for: .touchUpInside)
+        pinView?.leftCalloutAccessoryView = button
+        return pinView
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+            let region = MKCoordinateRegion(center: location.coordinate, span: span)
+            mapView.setRegion(region, animated: true)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            manager.requestLocation()
+            }
+        }
 
-    
-    
+        
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("error:: (error)")
+    }
 
 }
 
@@ -209,7 +256,7 @@ extension SearchTableViewController: HandleMapSearch {
         annotation.title = placemark.name
         if let city = placemark.locality,
         let state = placemark.administrativeArea {
-            annotation.subtitle = "(city) (state)"
+            annotation.subtitle = city + state
         }
         mapView.addAnnotation(annotation)
         let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
@@ -217,4 +264,9 @@ extension SearchTableViewController: HandleMapSearch {
         mapView.setRegion(region, animated: true)
         self.searchController?.searchBar.text = annotation.title
     }
+    
+    
+    
 }
+
+

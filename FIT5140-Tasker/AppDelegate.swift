@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        _ = "5eac59191b97c8f61b07c6062e74052db0bfc472"
+        _ = "df3c82abd8762be524629f3696d1d5f494494953"
         persistantContainer = NSPersistentContainer(name: "ImageModel")
         persistantContainer?.loadPersistentStores() { (description, error) in
             if let error = error {
