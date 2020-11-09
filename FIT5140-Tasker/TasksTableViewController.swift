@@ -11,40 +11,91 @@ import CoreData
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
-protocol AddSuperHeroDelegate: AnyObject {
-    func addSuperHero(newHero: SuperHero) -> Bool
+import UserNotifications
+protocol AddTaskDelegate: AnyObject {
+    func addSuperHero(newHero: Task) -> Bool
 }
-class TasksTableViewController: UITableViewController, DatabaseListener, UISearchResultsUpdating {
+class TasksTableViewController: UITableViewController, DatabaseListener, UISearchResultsUpdating, UNUserNotificationCenterDelegate {
     var handle: AuthStateDidChangeListenerHandle?
     @IBOutlet weak var imageView: UIImageView!
     var managedObjectContext: NSManagedObjectContext?
-    let SECTION_HEROES = 0
+    let SECTION_TASKS = 0
     let SECTION_INFO = 1
-    let CELL_HERO = "taskCell"
-    let CELL_INFO = "totalHeroesCell"
+    let CELL_TASK = "taskCell"
     
-    var allHeroes: [SuperHero] = []
-    var filteredHeroes: [SuperHero] = []
-    weak var superHeroDelegate: AddSuperHeroDelegate?
+    var allTasks: [Task] = []
+    var filteredTasks: [Task] = []
+    weak var taskDelegate: AddTaskDelegate?
     var databaseController: DatabaseProtocol?
     var listenerType: ListenerType = .all
-
+    var appDelegate = UIApplication.shared.delegate as? AppDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         managedObjectContext = appDelegate?.persistantContainer?.viewContext
         databaseController = FirebaseController()
 
-        filteredHeroes = allHeroes
+        filteredTasks = allTasks
         
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Heroes"
+        searchController.searchBar.placeholder = "Search for Locations"
         navigationItem.searchController = searchController
         
         // This view controller decides how the search controller is presented
         definesPresentationContext = true
+        
+        
+        
+//        let center = UNUserNotificationCenter.current()
+//
+//
+//           //Delegate for UNUserNotificationCenterDelegate
+//
+//
+//           //Permission for request alert, soud and badge
+//        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+//               // Enable or disable features based on authorization.
+//            if(!granted){
+//                print("not accept authorization")
+//            }else{
+//                print("accept authorization")
+//
+//            }
+//        }
+//        let content = UNMutableNotificationContent()
+//        content.title = "Reminder"
+//        content.body = "Open the app for see"
+//
+//        let date = Date().addingTimeInterval(5)
+//        let dateComp = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from:date)
+//        let identifier = UUID().uuidString
+//        //Receive notification after 5 sec
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+//
+//        //Receive with date
+////        var dateInfo = DateComponents()
+////        dateInfo.day = 9 //Put your day
+////        dateInfo.month = 11 //Put your month
+////        dateInfo.year = 2020 // Put your year
+////        dateInfo.hour = 17//Put your hour
+////        dateInfo.minute = 43 //Put your minutes
+//
+//            //specify if repeats or no
+//        //let trigger = UNCalendarNotificationTrigger(dateMatching: dateComp, repeats: false)
+//
+//        let request = UNNotificationRequest(identifier: "reminder", content: content, trigger: trigger)
+//
+//        print(identifier)
+//        center.add(request) { (error) in
+//            if let error = error {
+//                print("Error \(error.localizedDescription)")
+//            }else{
+//                print("send!!")
+//            }
+//        }
+//        center.add(request)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -52,7 +103,52 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-
+    
+    
+    
+    @IBAction func Note(_ sender: Any) {
+        setNotification()
+    
+//        let alertController = UIAlertController(title: "Local Notification", message: nil, preferredStyle: .actionSheet)
+//
+//        let setLocalNotificationAction = UIAlertAction(title: "Set", style: .default) { (action) in
+//            LocalNotificationManager.setNotification(5, of: .seconds, repeats: false, title: "Reminder", body: "You have a scheduled task: " + self.filteredTasks[0].name, userInfo: [Auth.auth().currentUser?.uid  : ["hello" : Auth.auth().currentUser?.displayName ]], date: self.filteredTasks[0].duedate)
+//        }
+//        let removeLocalNotificationAction = UIAlertAction(title: "Remove", style: .default) { (action) in
+//            LocalNotificationManager.cancel()
+//        }
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in }
+//        alertController.addAction(setLocalNotificationAction)
+//        alertController.addAction(removeLocalNotificationAction)
+//        alertController.addAction(cancelAction)
+//        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func setNotification(){
+        if self.filteredTasks.isEmpty{
+            let alert = UIAlertController(title: "Empty",
+                                          message: "No task at the moment ",
+                                          preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default)
+            alert.addAction(okAction)
+            present(alert, animated: true, completion: nil)
+            return}
+        for task in self.filteredTasks{
+            
+           
+                LocalNotificationManager.setNotification(5, of: .seconds, repeats: true, title: "Reminder", body: "You have a scheduled task: " + task.name, userInfo: [Auth.auth().currentUser?.uid  : ["hello" : Auth.auth().currentUser?.displayName ]], date: task.duedate)
+                
+            
+            
+        }
+        let alert = UIAlertController(title: "Set Reminder",
+                                      message: "Reminder are set as you wish :) ",
+                                      preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -62,7 +158,7 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return filteredHeroes.count
+        return filteredTasks.count
     }
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text?.lowercased() else {
@@ -70,11 +166,11 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
         }
         
         if searchText.count > 0 {
-            filteredHeroes = allHeroes.filter({ (hero: SuperHero) -> Bool in
+            filteredTasks = allTasks.filter({ (hero: Task) -> Bool in
                 return hero.name.lowercased().contains(searchText) ?? false
             })
         } else {
-            filteredHeroes = allHeroes
+            filteredTasks = allTasks
         }
         
         tableView.reloadData()
@@ -82,8 +178,8 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
       if editingStyle == .delete {
         print("Deleted")
-        databaseController?.deleteSuperHero(hero: filteredHeroes[indexPath.row])
-        self.filteredHeroes.remove(at: indexPath.row)
+        databaseController?.deleteTask(task: filteredTasks[indexPath.row])
+        self.filteredTasks.remove(at: indexPath.row)
         self.tableView.deleteRows(at: [indexPath], with: .automatic)
         
       }
@@ -114,7 +210,7 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
     */
 
@@ -155,6 +251,7 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+            
         databaseController?.addListener(listener: self)
         handle = Auth.auth().addStateDidChangeListener{ (auth, user) in
             guard let userID = Auth.auth().currentUser?.uid else {
@@ -201,31 +298,27 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == SECTION_HEROES {
-            let heroCell = tableView.dequeueReusableCell(withIdentifier: CELL_HERO,
-                for: indexPath) as! TaskTableViewCell
-            let hero = filteredHeroes[indexPath.row]
-            
-            heroCell.taskNameTextField.text = hero.name
-            heroCell.dueDateTextField.text = hero.abilities
-            
-            return heroCell
-        }
+       
+        let taskCell = tableView.dequeueReusableCell(withIdentifier: CELL_TASK,
+            for: indexPath) as! TaskTableViewCell
+        let task = filteredTasks[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: CELL_INFO, for: indexPath)
-        cell.textLabel?.text = "\(allHeroes.count) heroes in the database"
-        cell.textLabel?.textColor = .secondaryLabel
-        cell.selectionStyle = .none
-        return cell
+        taskCell.taskNameTextField.text = task.name
+        taskCell.dueDateTextField.text = task.duedate
+            
+        return taskCell
+        
+
+        
     }
 
     // MARK: - Database Listener
-    func onHeroListChange(change: DatabaseChange, heroes: [SuperHero]) {
-        allHeroes = heroes
+    func onTaskListChange(change: DatabaseChange, tasks: [Task]) {
+        allTasks = tasks
         updateSearchResults(for: navigationItem.searchController!)
     }
     
-    func onTeamChange(change: DatabaseChange, teamHeroes: [SuperHero]) {
+    func onTeamChange(change: DatabaseChange, teamHeroes: [Task]) {
         // Do nothing not called
     }
     

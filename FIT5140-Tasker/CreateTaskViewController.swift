@@ -9,12 +9,14 @@
 import UIKit
 import MapKit
 
+
 class CreateTaskViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, createTaskDelegate {
 
     @IBOutlet weak var taskNameTextField: UITextField!
     @IBOutlet weak var dueDatePicker: UIDatePicker!
     @IBOutlet weak var locationTextField: UITextField!
-   
+    @IBOutlet weak var reminderSwitch: UISwitch!
+    
     var databaseController: DatabaseProtocol?
     var locationManager:CLLocationManager!
     var resultSearchController:UISearchController? = nil
@@ -34,14 +36,14 @@ class CreateTaskViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     @IBAction func DoneButtonClick(_ sender: Any) {
         let timeFormatter = DateFormatter()
-        timeFormatter.dateStyle = DateFormatter.Style.short
-        timeFormatter.timeStyle = DateFormatter.Style.short
+        timeFormatter.dateFormat = "yyyy/MM/dd HH:mm"
+
 
         let dueDate = timeFormatter.string(from: dueDatePicker.date)
         if taskNameTextField.text != "" {
             let name = taskNameTextField.text!
-            let abilities = dueDate
-            let _ = databaseController?.addSuperHero(name: name, abilities: abilities)
+            
+            let _ = databaseController?.addTask(name: name, duedate: dueDate, reminder: self.reminderSwitch.isOn)
             
             navigationController?.popViewController(animated: true)
             return

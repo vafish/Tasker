@@ -8,11 +8,12 @@
 import Firebase
 import UIKit
 import CoreData
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-
+    let notificationCenter = UNUserNotificationCenter.current()
     var persistantContainer: NSPersistentContainer?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -25,7 +26,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
-        return true
+        notificationCenter.delegate = self
+        
+        let options: UNAuthorizationOptions = [.alert, .sound, .badge]
+        
+        notificationCenter.requestAuthorization(options: options) {
+            (didAllow, error) in
+            if !didAllow {
+                print("User has declined notifications")
+            }
+        }
+//        let center = UNUserNotificationCenter.current()
+//
+//
+//           //Delegate for UNUserNotificationCenterDelegate
+//           //center.delegate = self
+//
+//           //Permission for request alert, soud and badge
+//           center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+//               // Enable or disable features based on authorization.
+//               if(!granted){
+//                   print("Authorization not accepted")
+//               }else{
+//                   print("Allow local notifications")
+//
+//
+//
+//               }
+//           }
+           return true
+       
     }
 
     // MARK: UISceneSession Lifecycle
@@ -43,4 +73,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+}
+
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        completionHandler([.alert, .sound])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        if response.notification.request.identifier == "Local Notification" {
+            print("Handling notifications with the Local Notification Identifier")
+        }
+        
+        completionHandler()
+    }
+    
+    func scheduleNotification(notificationType: String) {
+        
+        let content = UNMutableNotificationContent() // Содержимое уведомления
+        let categoryIdentifire = "Delete Notification Type"
+        
+        content.title = notificationType
+        content.body = "This is example how to create " + notificationType
+        content.sound = UNNotificationSound.default
+        content.badge = 1
+        content.categoryIdentifier = categoryIdentifire
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let identifier = "Local Notification"
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        notificationCenter.add(request) { (error) in
+            if let error = error {
+                print("Error \(error.localizedDescription)")
+            }
+        }
+        
+        let snoozeAction = UNNotificationAction(identifier: "Snooze", title: "Snooze", options: [])
+        let deleteAction = UNNotificationAction(identifier: "DeleteAction", title: "Delete", options: [.destructive])
+        let category = UNNotificationCategory(identifier: categoryIdentifire,
+                                              actions: [snoozeAction, deleteAction],
+                                              intentIdentifiers: [],
+                                              options: [])
+        
+        notificationCenter.setNotificationCategories([category])
+    }
 }

@@ -15,27 +15,25 @@ enum DatabaseChange {
 }
 
 enum ListenerType {
-    case team
-    case heroes
+    case tasks
     case all
 }
 
 protocol DatabaseListener: AnyObject {
     var listenerType: ListenerType {get set}
-    func onTeamChange(change: DatabaseChange, teamHeroes: [SuperHero])
-    func onHeroListChange(change: DatabaseChange, heroes: [SuperHero])
+    func onTaskListChange(change: DatabaseChange, tasks: [Task])
 }
 
 protocol DatabaseProtocol: AnyObject {
-    var defaultTeam: Team {get}
+//    var defaultTeam: Team {get}
     
     func cleanup()
-    func addSuperHero(name: String, abilities: String) -> SuperHero
-    func addTeam(teamName: String) -> Team
-    func addHeroToTeam(hero: SuperHero, team: Team) -> Bool
-    func deleteSuperHero(hero: SuperHero)
-    func deleteTeam(team: Team)
-    func removeHeroFromTeam(hero: SuperHero, team: Team)
+    func addTask(name: String, duedate: String, reminder: Bool) -> Task
+//    func addTeam(teamName: String) -> Team
+//    func addHeroToTeam(hero: Task, team: Team) -> Bool
+    func deleteTask(task: Task)
+//    func deleteTeam(team: Team)
+//    func removeHeroFromTeam(hero: Task, team: Team)
     func addListener(listener: DatabaseListener)
     func removeListener(listener: DatabaseListener)
 }

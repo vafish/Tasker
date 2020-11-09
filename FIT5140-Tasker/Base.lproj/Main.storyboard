@@ -353,6 +353,14 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small"/>
                         </imageView>
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="EQV-Ax-R8l">
+                            <rect key="frame" x="0.0" y="173" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Set Reminder"/>
+                            <connections>
+                                <action selector="Note:" destination="eiB-GG-3cr" eventType="touchUpInside" id="KGV-94-oDd"/>
+                            </connections>
+                        </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="taskCell" textLabel="2iP-4A-Oyz" detailTextLabel="rMk-jc-iJL" style="IBUITableViewCellStyleSubtitle" id="k8Z-3J-naL" customClass="TaskTableViewCell" customModule="FIT5140_Tasker" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="99.5" width="414" height="55.5"/>
@@ -455,10 +463,23 @@
                                     <segue destination="COW-ws-c0k" kind="show" id="1Zh-Dr-VMO"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reminder:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ndb-Lb-FLY">
+                                <rect key="frame" x="20" y="555" width="152" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="152" id="fYw-gX-Kwm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" title="Reminder" translatesAutoresizingMaskIntoConstraints="NO" id="GE3-2s-ShU">
+                                <rect key="frame" x="269" y="550" width="49" height="31"/>
+                            </switch>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="naB-mZ-9nz"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="GE3-2s-ShU" firstAttribute="top" secondItem="BjJ-Me-duS" secondAttribute="bottom" constant="15" id="1rV-uH-0sm"/>
                             <constraint firstItem="YWk-uH-Aq6" firstAttribute="trailing" secondItem="PiQ-We-ZZP" secondAttribute="trailingMargin" id="7Nv-OT-czt"/>
                             <constraint firstItem="YWk-uH-Aq6" firstAttribute="leading" secondItem="PiQ-We-ZZP" secondAttribute="leadingMargin" id="7UX-IL-oSl"/>
                             <constraint firstItem="GDc-zG-cUw" firstAttribute="trailing" secondItem="vUx-fw-niq" secondAttribute="trailing" id="AnO-Va-d2R"/>
@@ -469,13 +490,17 @@
                             <constraint firstItem="TzD-rP-Q0C" firstAttribute="leading" secondItem="Lty-NU-Pqc" secondAttribute="leading" id="Hvp-ae-EoH"/>
                             <constraint firstItem="BjJ-Me-duS" firstAttribute="top" secondItem="Lty-NU-Pqc" secondAttribute="bottom" constant="10" id="KfJ-cq-sVB"/>
                             <constraint firstItem="vUx-fw-niq" firstAttribute="top" secondItem="GDc-zG-cUw" secondAttribute="bottom" constant="20" id="LAG-sa-B9X"/>
+                            <constraint firstItem="naB-mZ-9nz" firstAttribute="trailing" secondItem="GE3-2s-ShU" secondAttribute="trailing" constant="98" id="RVc-Yl-jHM"/>
+                            <constraint firstItem="Ndb-Lb-FLY" firstAttribute="centerY" secondItem="GE3-2s-ShU" secondAttribute="centerY" id="UTj-7b-r7q"/>
                             <constraint firstItem="YWk-uH-Aq6" firstAttribute="leading" secondItem="GDc-zG-cUw" secondAttribute="leading" id="XZp-4i-52G"/>
                             <constraint firstItem="naB-mZ-9nz" firstAttribute="trailing" secondItem="BjJ-Me-duS" secondAttribute="trailing" constant="20" id="Xey-qh-YEI"/>
                             <constraint firstItem="PuH-X9-nV8" firstAttribute="top" secondItem="TzD-rP-Q0C" secondAttribute="bottom" constant="20" id="cLb-3U-a29"/>
                             <constraint firstItem="YWk-uH-Aq6" firstAttribute="trailing" secondItem="GDc-zG-cUw" secondAttribute="trailing" id="cQ8-dH-DLs"/>
                             <constraint firstItem="GDc-zG-cUw" firstAttribute="top" secondItem="YWk-uH-Aq6" secondAttribute="bottom" constant="10" id="eaj-1M-R3b"/>
+                            <constraint firstItem="GE3-2s-ShU" firstAttribute="leading" secondItem="naB-mZ-9nz" secondAttribute="leading" constant="269" id="fWg-SX-ylI"/>
                             <constraint firstItem="vUx-fw-niq" firstAttribute="trailing" secondItem="TzD-rP-Q0C" secondAttribute="trailing" id="i28-r1-aon"/>
                             <constraint firstItem="GDc-zG-cUw" firstAttribute="leading" secondItem="vUx-fw-niq" secondAttribute="leading" id="nDo-ce-n8r"/>
+                            <constraint firstItem="Ndb-Lb-FLY" firstAttribute="leading" secondItem="BjJ-Me-duS" secondAttribute="leading" id="nJS-xI-JxB"/>
                             <constraint firstItem="naB-mZ-9nz" firstAttribute="trailing" secondItem="PuH-X9-nV8" secondAttribute="trailing" constant="20" id="nqr-5I-M1F"/>
                             <constraint firstItem="TzD-rP-Q0C" firstAttribute="top" secondItem="vUx-fw-niq" secondAttribute="bottom" constant="10" id="ogE-Xr-GSa"/>
                             <constraint firstItem="vUx-fw-niq" firstAttribute="leading" secondItem="TzD-rP-Q0C" secondAttribute="leading" id="tLt-Sp-jEW"/>
@@ -491,6 +516,7 @@
                     <connections>
                         <outlet property="dueDatePicker" destination="TzD-rP-Q0C" id="Rw4-F9-1z4"/>
                         <outlet property="locationTextField" destination="BjJ-Me-duS" id="Je9-gJ-2xM"/>
+                        <outlet property="reminderSwitch" destination="GE3-2s-ShU" id="kxa-8L-C8O"/>
                         <outlet property="taskNameTextField" destination="GDc-zG-cUw" id="apr-Ee-Nmi"/>
                     </connections>
                 </viewController>

@@ -8,26 +8,28 @@
 
 import UIKit
 
-class SuperHero: NSObject, Codable{
+class Task: NSObject, Codable{
 
     var id: String?
     var name:String=""
-    var abilities:String=""
+    var duedate:String=""
     var tid: String = ""
+    var reminder: Bool?
 
     enum CodingKeys: String, CodingKey {
         case id
         case name
-        case abilities
+        case duedate
         case tid
+        case reminder
     }
 }
 
 
 
-class Team: NSObject{
-
-var id: String?
-var name:String=""
-var heroes:[SuperHero]=[]
-}
+//class Team: NSObject{
+//
+//var id: String?
+//var name:String=""
+//var heroes:[Task]=[]
+//}

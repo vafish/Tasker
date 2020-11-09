@@ -14,14 +14,13 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 	class FirebaseController: NSObject, DatabaseProtocol {
     
-    let DEFAULT_TEAM_NAME = "Default Team"
+
     var listeners = MulticastDelegate<DatabaseListener>()
     var authController: Auth
     var database: Firestore
-    var heroesRef: CollectionReference?
-    var teamsRef: CollectionReference?
-    var heroList: [SuperHero]
-    var defaultTeam: Team
+    var taskRef: CollectionReference?
+    var taskList: [Task]
+//    var defaultTeam: Team
     
     override init() {
         // To use Firebase in our application we first must run the
@@ -30,8 +29,8 @@ import FirebaseFirestoreSwift
         // We call auth and firestore to get access to these frameworks
         authController = Auth.auth()
         database = Firestore.firestore()
-        heroList = [SuperHero]()
-        defaultTeam = Team()
+        taskList = [Task]()
+//        defaultTeam = Team()
         
         super.init()
         
@@ -39,120 +38,86 @@ import FirebaseFirestoreSwift
         // The closure will not execute until its recieved a message back which can be
         // any time later
         if Auth.auth().currentUser != nil{
-            setUpHeroListener()
+            setUpTaskListener()
             
         }
     }
     
     // MARK:- Setup code for Firestore listeners
-    func setUpHeroListener() {
+    func setUpTaskListener() {
         let userId = Auth.auth().currentUser!.uid
-        heroesRef = database.collection("users").document(userId).collection("tasks")
-        heroesRef?.whereField("tid", isEqualTo: userId).addSnapshotListener { (querySnapshot, error) in
+        taskRef = database.collection("users").document(userId).collection("tasks")
+        taskRef?.whereField("tid", isEqualTo: userId).addSnapshotListener { (querySnapshot, error) in
             guard let querySnapshot = querySnapshot else {
                 print("Error fetching documents: \(error!)")
                 return
             }
             self.parseHeroesSnapshot(snapshot: querySnapshot)
             
-            // Team listener references heroes, so we need to
-            // do it after we have parsed heroes.
-            self.setUpTeamListener()
+
         }
     }
         
         
-    func setUpTeamListener() {
-        teamsRef = database.collection("teams")
-        teamsRef?.whereField("name", isEqualTo: DEFAULT_TEAM_NAME).addSnapshotListener {
-            (querySnapshot, error) in
-            guard let querySnapshot = querySnapshot,
-                let teamSnapshot = querySnapshot.documents.first else {
-                    print("Error fetching teams: \(error!)")
-                    return
-            }
-            self.parseTeamSnapshot(snapshot: teamSnapshot)
-        }
-    }
+
     
     // MARK:- Parse Functions for Firebase Firestore responses
     func parseHeroesSnapshot(snapshot: QuerySnapshot) {
         snapshot.documentChanges.forEach { (change) in
-            let heroID = change.document.documentID
-            print(heroID)
+            let taskID = change.document.documentID
+            print(taskID)
             
-            var parsedHero: SuperHero?
+            var parsedTask: Task?
             
             do {
-                parsedHero = try change.document.data(as: SuperHero.self)
+                parsedTask = try change.document.data(as: Task.self)
             } catch {
                 print("Unable to decode hero. Is the hero malformed?")
                 return
             }
             
-            guard let hero = parsedHero else {
+            guard let task = parsedTask else {
                 print("Document doesn't exist")
                 return;
             }
             
-            hero.id = heroID
+            task.id = taskID
             if change.type == .added {
-                heroList.append(hero)
+                taskList.append(task)
             }
             else if change.type == .modified {
-                let index = getHeroIndexByID(heroID)!
-                heroList[index] = hero
+                let index = getTaskIndexByID(taskID)!
+                taskList[index] = task
             }
             else if change.type == .removed {
-                if let index = getHeroIndexByID(heroID) {
-                    heroList.remove(at: index)
+                if let index = getTaskIndexByID(taskID) {
+                    taskList.remove(at: index)
                 }
             }
         }
         
         listeners.invoke { (listener) in
-            if listener.listenerType == ListenerType.heroes ||
+            if listener.listenerType == ListenerType.tasks ||
                 listener.listenerType == ListenerType.all {
-                listener.onHeroListChange(change: .update, heroes: heroList)
+                listener.onTaskListChange(change: .update, tasks: taskList)
             }
         }
     }
-    func parseTeamSnapshot(snapshot: QueryDocumentSnapshot) {
-        defaultTeam = Team()
-        defaultTeam.name = snapshot.data()["name"] as! String
-        defaultTeam.id = snapshot.documentID
-        
-        if let heroReferences = snapshot.data()["heroes"] as? [DocumentReference] {
-            
-            // If the document has a "heroes" field, add heroes.
-            for reference in heroReferences {
-                if let hero = getHeroByID(reference.documentID) {
-                    defaultTeam.heroes.append(hero)
-                }
-            }
-        }
-        
-        listeners.invoke { (listener) in
-            if listener.listenerType == ListenerType.team ||
-                listener.listenerType == ListenerType.all {
-                listener.onTeamChange(change: .update, teamHeroes: defaultTeam.heroes)
-            }
-        }
-    }
+
     
     // MARK:- Utility Functions
-    func getHeroIndexByID(_ id: String) -> Int? {
-        if let hero = getHeroByID(id) {
-            return heroList.firstIndex(of: hero)
+    func getTaskIndexByID(_ id: String) -> Int? {
+        if let hero = getTaskById(id) {
+            return taskList.firstIndex(of: hero)
         }
         
         return nil
     }
     
-    func getHeroByID(_ id: String) -> SuperHero? {
-        for hero in heroList {
-            if hero.id == id {
-                return hero
+    func getTaskById(_ id: String) -> Task? {
+        for task in taskList {
+            if task.id == id {
+                return task
             }
         }
         
@@ -163,82 +128,39 @@ import FirebaseFirestoreSwift
         
     }
     
-    func addSuperHero(name: String, abilities: String) -> SuperHero {
-        let hero = SuperHero()
-        hero.name = name
-        hero.abilities = abilities
-        hero.tid = Auth.auth().currentUser!.uid
+        func addTask(name: String, duedate: String, reminder: Bool) -> Task {
+        let task = Task()
+        task.name = name
+        task.duedate = duedate
+        task.reminder = reminder
+        task.tid = Auth.auth().currentUser!.uid
+        
         
         do {
-            if let heroRef = try heroesRef?.addDocument(from: hero) {
-                hero.id = heroRef.documentID
+            if let taskRef = try taskRef?.addDocument(from: task) {
+                task.id = taskRef.documentID
             }
         } catch {
             print("Failed to serialize hero")
         }
         
-        return hero
+        return task
     }
     
-    func addTeam(teamName: String) -> Team {
-        let team = Team()
-        
-        team.name = teamName
-        if let teamRef = teamsRef?.addDocument(data: ["name" : teamName, "heroes": []]) {
-            team.id = teamRef.documentID
-        }
-        return team
-    }
+
     
-    func addHeroToTeam(hero: SuperHero, team: Team) -> Bool {
-        
-        guard let heroID = hero.id, let teamID = team.id,
-            team.heroes.count < 6 else {
-                return false
-        }
-        
-        if let newHeroRef = heroesRef?.document(heroID) {
-            teamsRef?.document(teamID).updateData(
-                ["heroes" : FieldValue.arrayUnion([newHeroRef])]
-            )
-        }
-        return true
-    }
-    
-    func deleteSuperHero(hero: SuperHero) {
-        if let heroID = hero.id {
-            heroesRef?.document(heroID).delete()
-        }
-    }
-    
-    func deleteTeam(team: Team) {
-        if let teamID = team.id {
-            teamsRef?.document(teamID).delete()
-        }
-    }
-    
-    func removeHeroFromTeam(hero: SuperHero, team: Team) {
-        if team.heroes.contains(hero), let teamID = team.id,
-            let heroID = hero.id {
-            if let removedRef = heroesRef?.document(heroID) {
-                teamsRef?.document(teamID).updateData(
-                    ["heroes": FieldValue.arrayRemove([removedRef])]
-                )
-            }
+    func deleteTask(task: Task) {
+        if let taskID = task.id {
+            taskRef?.document(taskID).delete()
         }
     }
     
     func addListener(listener: DatabaseListener) {
         listeners.addDelegate(listener)
         
-        if listener.listenerType == ListenerType.team ||
+        if listener.listenerType == ListenerType.tasks ||
             listener.listenerType == ListenerType.all {
-            listener.onTeamChange(change: .update, teamHeroes: defaultTeam.heroes)
-        }
-        
-        if listener.listenerType == ListenerType.heroes ||
-            listener.listenerType == ListenerType.all {
-            listener.onHeroListChange(change: .update, heroes: heroList)
+            listener.onTaskListChange(change: .update, tasks: taskList)
         }
     }
     
