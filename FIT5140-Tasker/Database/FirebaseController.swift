@@ -72,7 +72,7 @@ import FirebaseFirestoreSwift
             do {
                 parsedTask = try change.document.data(as: Task.self)
             } catch {
-                print("Unable to decode hero. Is the hero malformed?")
+                print("Unable to decode the task")
                 return
             }
             
@@ -141,7 +141,7 @@ import FirebaseFirestoreSwift
                 task.id = taskRef.documentID
             }
         } catch {
-            print("Failed to serialize hero")
+            print("Failed to serialize task")
         }
         
         return task

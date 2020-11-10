@@ -12,6 +12,7 @@ import Firebase
 import FirebaseDatabase
 
 class RegisterViewController: UIViewController {
+   
     var handle: AuthStateDidChangeListenerHandle?
     var image_url: String?
     @IBOutlet weak var imageView: UIImageView!
@@ -19,7 +20,9 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+      
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
 
             //Uncomment the line below if you want the tap not not interfere and cancel other interactions.

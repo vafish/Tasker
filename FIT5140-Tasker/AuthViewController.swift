@@ -19,7 +19,7 @@ class AuthViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
     @IBAction func loginToAccount(_ sender: Any) {
@@ -64,7 +64,7 @@ class AuthViewController: UIViewController {
      super.viewWillAppear(animated)
      handle = Auth.auth().addStateDidChangeListener( { (auth, user) in
      if user != nil {
-     self.performSegue(withIdentifier: "loginSegue", sender: nil)
+        self.performSegue(withIdentifier: "loginSegue", sender: nil)
      }
      })
      }

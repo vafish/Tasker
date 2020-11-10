@@ -40,7 +40,7 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search for Locations"
+        searchController.searchBar.placeholder = "Search for Tasks"
         navigationItem.searchController = searchController
         
         // This view controller decides how the search controller is presented
