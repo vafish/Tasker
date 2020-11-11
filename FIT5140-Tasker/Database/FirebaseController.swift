@@ -128,7 +128,7 @@ import FirebaseFirestoreSwift
         
     }
     
-        func addTask(name: String, duedate: String, reminder: Bool) -> Task {
+    func addTask(name: String, duedate: String, reminder: Bool) -> Task {
         let task = Task()
         task.name = name
         task.duedate = duedate
@@ -147,7 +147,29 @@ import FirebaseFirestoreSwift
         return task
     }
     
-
+    func editTask(oldtask: Task, newtask:Task)->Task {
+            
+            if let taskID = oldtask.id {
+                taskRef?.document(taskID).delete()
+            }
+            
+            let task = Task()
+            task.name = newtask.name
+            task.duedate = newtask.duedate
+            task.reminder = newtask.reminder
+            task.tid = Auth.auth().currentUser!.uid
+            
+            
+            do {
+                if let taskRef = try taskRef?.addDocument(from: task) {
+                    task.id = taskRef.documentID
+                }
+            } catch {
+                print("Failed to edit task")
+            }
+            
+        return task
+    }
     
     func deleteTask(task: Task) {
         if let taskID = task.id {

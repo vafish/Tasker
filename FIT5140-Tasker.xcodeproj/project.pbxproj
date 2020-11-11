@@ -19,6 +19,7 @@
 		03F7A2BB2470BC0600E95C8E /* TaskerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F7A2BA2470BC0600E95C8E /* TaskerViewController.swift */; };
 		03F7A2BD2470BC1900E95C8E /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F7A2BC2470BC1900E95C8E /* CameraViewController.swift */; };
 		3148E112254AECF20058FADD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3148E111254AECF20058FADD /* GoogleService-Info.plist */; };
+		314A0CE5255BAE040019FCAE /* EditTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A0CE4255BAE040019FCAE /* EditTaskViewController.swift */; };
 		314A420B255043C500FCDC17 /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A420A255043C500FCDC17 /* TasksTableViewController.swift */; };
 		314DA2E0254EE6D80065819E /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314DA2DF254EE6D80065819E /* RegisterViewController.swift */; };
 		314E6C4C2551399500D85B1B /* CreateTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314E6C4B2551399500D85B1B /* CreateTaskViewController.swift */; };
@@ -51,6 +52,7 @@
 		09D46E0C83FB0E10DF2A3CE6 /* Pods_FIT5140_Tasker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FIT5140_Tasker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1547B27C1B84D002DF3463E2 /* Pods-FIT5140-Tasker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FIT5140-Tasker.debug.xcconfig"; path = "Target Support Files/Pods-FIT5140-Tasker/Pods-FIT5140-Tasker.debug.xcconfig"; sourceTree = "<group>"; };
 		3148E111254AECF20058FADD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		314A0CE4255BAE040019FCAE /* EditTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskViewController.swift; sourceTree = "<group>"; };
 		314A420A255043C500FCDC17 /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
 		314DA2DF254EE6D80065819E /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		314E6C4B2551399500D85B1B /* CreateTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTaskViewController.swift; sourceTree = "<group>"; };
@@ -110,18 +112,19 @@
 				03F7A2812470A7D100E95C8E /* Assets.xcassets */,
 				03F7A2832470A7D100E95C8E /* LaunchScreen.storyboard */,
 				03F7A2862470A7D100E95C8E /* Info.plist */,
-				03F7A2B72470BBDD00E95C8E /* ImageCollectionViewCell.swift */,
-				03F7A2BA2470BC0600E95C8E /* TaskerViewController.swift */,
-				03F7A2BC2470BC1900E95C8E /* CameraViewController.swift */,
 				31CEC73D254ACADE0000C9C9 /* AuthViewController.swift */,
-				314DA2DF254EE6D80065819E /* RegisterViewController.swift */,
-				314A420A255043C500FCDC17 /* TasksTableViewController.swift */,
+				03F7A2BC2470BC1900E95C8E /* CameraViewController.swift */,
 				314E6C4B2551399500D85B1B /* CreateTaskViewController.swift */,
-				314E6C5A25513F0300D85B1B /* Task.swift */,
-				3186FE91255274180014ED72 /* TaskTableViewCell.swift */,
-				31994EA72553C51B0036DC6C /* SearchTableViewController.swift */,
+				314A0CE4255BAE040019FCAE /* EditTaskViewController.swift */,
+				03F7A2B72470BBDD00E95C8E /* ImageCollectionViewCell.swift */,
 				31994EB125541D530036DC6C /* LocationsTableViewController.swift */,
 				319A8D04255955A90082DE7D /* LocalNotificationManager.swift */,
+				314DA2DF254EE6D80065819E /* RegisterViewController.swift */,
+				31994EA72553C51B0036DC6C /* SearchTableViewController.swift */,
+				03F7A2BA2470BC0600E95C8E /* TaskerViewController.swift */,
+				314A420A255043C500FCDC17 /* TasksTableViewController.swift */,
+				314E6C5A25513F0300D85B1B /* Task.swift */,
+				3186FE91255274180014ED72 /* TaskTableViewCell.swift */,
 			);
 			path = "FIT5140-Tasker";
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				31CEC73E254ACADE0000C9C9 /* AuthViewController.swift in Sources */,
 				314E6C5B25513F0300D85B1B /* Task.swift in Sources */,
 				03F7A2B82470BBDD00E95C8E /* ImageCollectionViewCell.swift in Sources */,
+				314A0CE5255BAE040019FCAE /* EditTaskViewController.swift in Sources */,
 				314E6C4F25513E6C00D85B1B /* DatabaseProtocal.swift in Sources */,
 				03F7A27B2470A7CF00E95C8E /* SceneDelegate.swift in Sources */,
 				3186FE92255274180014ED72 /* TaskTableViewCell.swift in Sources */,

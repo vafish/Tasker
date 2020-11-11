@@ -410,11 +410,108 @@
                     </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="bUM-39-k3z" id="Pzd-Kq-lRM"/>
+                        <segue destination="fHe-bf-kbS" kind="show" identifier="taskDetailSegue" id="qnJ-ug-5cF"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lOr-dG-BW0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="937.68115942028987" y="862.5"/>
+        </scene>
+        <!--Edit Taskl View Controller-->
+        <scene sceneID="iHy-rJ-ARl">
+            <objects>
+                <viewController id="fHe-bf-kbS" customClass="EditTasklViewController" customModule="FIT5140_Tasker" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RMj-Dr-AQw">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KWA-Nm-nHg">
+                                <rect key="frame" x="20" y="128" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zyw-do-YR7">
+                                <rect key="frame" x="20" y="159" width="374" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Description:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U1b-YZ-Pk8">
+                                <rect key="frame" x="20" y="213" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Due date:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ppd-NO-9LT">
+                                <rect key="frame" x="20" y="298" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reminder: (on/off)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qh2-hn-Ncu">
+                                <rect key="frame" x="20" y="563" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="U7R-xa-OST">
+                                <rect key="frame" x="20" y="244" width="374" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="P7V-cC-Rua">
+                                <rect key="frame" x="20" y="327" width="374" height="216"/>
+                            </datePicker>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fxl-2K-MdN">
+                                <rect key="frame" x="345" y="563" width="51" height="31"/>
+                            </switch>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="IMz-pF-S7z"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="IMz-pF-S7z" firstAttribute="trailing" secondItem="Ppd-NO-9LT" secondAttribute="trailing" constant="20" id="2aM-ab-uwj"/>
+                            <constraint firstItem="Ppd-NO-9LT" firstAttribute="leading" secondItem="IMz-pF-S7z" secondAttribute="leading" constant="20" id="3zS-R7-FAO"/>
+                            <constraint firstItem="IMz-pF-S7z" firstAttribute="trailing" secondItem="KWA-Nm-nHg" secondAttribute="trailing" constant="20" id="4up-5e-EME"/>
+                            <constraint firstItem="U7R-xa-OST" firstAttribute="top" secondItem="U1b-YZ-Pk8" secondAttribute="bottom" constant="10" id="5hD-hj-mW2"/>
+                            <constraint firstItem="P7V-cC-Rua" firstAttribute="leading" secondItem="IMz-pF-S7z" secondAttribute="leading" constant="20" id="8SP-jq-gIE"/>
+                            <constraint firstItem="zyw-do-YR7" firstAttribute="top" secondItem="KWA-Nm-nHg" secondAttribute="bottom" constant="10" id="8q7-BL-1xN"/>
+                            <constraint firstItem="U7R-xa-OST" firstAttribute="leading" secondItem="IMz-pF-S7z" secondAttribute="leading" constant="20" id="ABj-cj-Hko"/>
+                            <constraint firstItem="KWA-Nm-nHg" firstAttribute="leading" secondItem="IMz-pF-S7z" secondAttribute="leading" constant="20" id="C2B-co-fHB"/>
+                            <constraint firstItem="zyw-do-YR7" firstAttribute="leading" secondItem="IMz-pF-S7z" secondAttribute="leading" constant="20" id="GFK-GC-YE0"/>
+                            <constraint firstItem="P7V-cC-Rua" firstAttribute="top" secondItem="Ppd-NO-9LT" secondAttribute="bottom" constant="8" id="GYh-65-4n9"/>
+                            <constraint firstItem="P7V-cC-Rua" firstAttribute="trailing" secondItem="IMz-pF-S7z" secondAttribute="trailing" constant="-20" id="Kcy-Gq-GPk"/>
+                            <constraint firstItem="U1b-YZ-Pk8" firstAttribute="leading" secondItem="IMz-pF-S7z" secondAttribute="leading" constant="20" id="Lhk-LI-jFh"/>
+                            <constraint firstItem="Ppd-NO-9LT" firstAttribute="top" secondItem="U7R-xa-OST" secondAttribute="bottom" constant="20" id="M6O-nN-czp"/>
+                            <constraint firstItem="fxl-2K-MdN" firstAttribute="top" secondItem="qh2-hn-Ncu" secondAttribute="top" id="P03-YQ-KKl"/>
+                            <constraint firstItem="qh2-hn-Ncu" firstAttribute="top" secondItem="P7V-cC-Rua" secondAttribute="bottom" constant="20" id="PCT-jX-O2m"/>
+                            <constraint firstItem="U7R-xa-OST" firstAttribute="top" secondItem="U1b-YZ-Pk8" secondAttribute="bottom" constant="10" id="Pwk-bn-xol"/>
+                            <constraint firstItem="U1b-YZ-Pk8" firstAttribute="top" secondItem="zyw-do-YR7" secondAttribute="bottom" constant="20" id="WAS-uO-Lkd"/>
+                            <constraint firstItem="KWA-Nm-nHg" firstAttribute="top" secondItem="IMz-pF-S7z" secondAttribute="top" constant="40" id="ZBf-MQ-Fqn"/>
+                            <constraint firstItem="IMz-pF-S7z" firstAttribute="trailing" secondItem="qh2-hn-Ncu" secondAttribute="trailing" constant="20" id="egx-1O-Vzj"/>
+                            <constraint firstItem="fxl-2K-MdN" firstAttribute="trailing" secondItem="P7V-cC-Rua" secondAttribute="trailing" id="exd-Uf-FNp"/>
+                            <constraint firstItem="IMz-pF-S7z" firstAttribute="trailing" secondItem="U1b-YZ-Pk8" secondAttribute="trailing" constant="20" id="lNh-ll-aZ4"/>
+                            <constraint firstItem="qh2-hn-Ncu" firstAttribute="leading" secondItem="IMz-pF-S7z" secondAttribute="leading" constant="20" id="nte-MM-omv"/>
+                            <constraint firstItem="IMz-pF-S7z" firstAttribute="trailing" secondItem="U7R-xa-OST" secondAttribute="trailing" constant="20" id="qMc-Ms-3jp"/>
+                            <constraint firstItem="IMz-pF-S7z" firstAttribute="trailing" secondItem="zyw-do-YR7" secondAttribute="trailing" constant="20" id="rL2-Sr-tjl"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="1Bx-DS-UJn">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="fi8-7B-zIW">
+                            <connections>
+                                <action selector="DoneButtonClicked:" destination="fHe-bf-kbS" id="CMT-Y6-erP"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="datePicker" destination="P7V-cC-Rua" id="kiy-PT-KlS"/>
+                        <outlet property="descriptionTextField" destination="U7R-xa-OST" id="Ld9-4r-pzy"/>
+                        <outlet property="nameTextField" destination="zyw-do-YR7" id="Yo8-MO-oMD"/>
+                        <outlet property="reminderSwitch" destination="fxl-2K-MdN" id="Ooy-OO-4I7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yCm-cM-fuP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="937.68115942028987" y="1569.6428571428571"/>
         </scene>
         <!--New Task-->
         <scene sceneID="oFs-Nw-KmI">

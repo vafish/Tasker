@@ -15,20 +15,25 @@ import UserNotifications
 protocol AddTaskDelegate: AnyObject {
     func addSuperHero(newHero: Task) -> Bool
 }
-class TasksTableViewController: UITableViewController, DatabaseListener, UISearchResultsUpdating, UNUserNotificationCenterDelegate {
+class TasksTableViewController: UITableViewController, DatabaseListener, UISearchResultsUpdating, UNUserNotificationCenterDelegate, editTaskDelegate {
+    
+    
+    
+    
     var handle: AuthStateDidChangeListenerHandle?
     @IBOutlet weak var imageView: UIImageView!
     var managedObjectContext: NSManagedObjectContext?
     let SECTION_TASKS = 0
     let SECTION_INFO = 1
     let CELL_TASK = "taskCell"
-    
     var allTasks: [Task] = []
     var filteredTasks: [Task] = []
     weak var taskDelegate: AddTaskDelegate?
     var databaseController: DatabaseProtocol?
     var listenerType: ListenerType = .all
     var appDelegate = UIApplication.shared.delegate as? AppDelegate
+    var tempTask: Task?
+    var delegate: editTaskDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
@@ -104,7 +109,9 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
+
     
+
     
     @IBAction func Note(_ sender: Any) {
         setNotification()
@@ -184,15 +191,33 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
         
       }
     }
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+       
+        let taskCell = tableView.dequeueReusableCell(withIdentifier: CELL_TASK,
+            for: indexPath) as! TaskTableViewCell
+        let task = filteredTasks[indexPath.row]
+        
+        taskCell.taskNameTextField.text = task.name
+        taskCell.dueDateTextField.text = task.duedate
+            
+        return taskCell
+        
 
-        // Configure the cell...
-
-        return cell
+        
     }
-    */
+    
+    override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath) {
+        
+        tempTask = self.filteredTasks[indexPath.row]
+        
+        
+        self.performSegue(withIdentifier:"taskDetailSegue", sender:self)
+        
+    }
+        
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -229,15 +254,20 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if let destination = segue.destination as? EditTasklViewController {
+                    destination.delegate = self
+                }
     }
-    */
+    
+    func showTask(controller: EditTasklViewController) {
+        controller.task = tempTask
+    }
+    
     @IBAction func Logout(_ sender: Any) {
         do {
          try Auth.auth().signOut()
@@ -296,21 +326,7 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
         Auth.auth().removeStateDidChangeListener(handle!)
         databaseController?.addListener(listener: self)
     }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
-        let taskCell = tableView.dequeueReusableCell(withIdentifier: CELL_TASK,
-            for: indexPath) as! TaskTableViewCell
-        let task = filteredTasks[indexPath.row]
-        
-        taskCell.taskNameTextField.text = task.name
-        taskCell.dueDateTextField.text = task.duedate
-            
-        return taskCell
-        
 
-        
-    }
 
     // MARK: - Database Listener
     func onTaskListChange(change: DatabaseChange, tasks: [Task]) {
@@ -332,6 +348,6 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
         
     
     
-    
+
 
 }
