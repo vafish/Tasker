@@ -10,8 +10,9 @@ import UIKit
 import MapKit
 
 
-class CreateTaskViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, createTaskDelegate {
+class CreateTaskViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, searchDelegate {
 
+    @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var taskNameTextField: UITextField!
     @IBOutlet weak var dueDatePicker: UIDatePicker!
     @IBOutlet weak var locationTextField: UITextField!
@@ -42,8 +43,9 @@ class CreateTaskViewController: UIViewController, MKMapViewDelegate, CLLocationM
         let dueDate = timeFormatter.string(from: dueDatePicker.date)
         if taskNameTextField.text != "" {
             let name = taskNameTextField.text!
-            
-            let _ = databaseController?.addTask(name: name, duedate: dueDate, reminder: self.reminderSwitch.isOn)
+            let descript = descriptionTextField.text!
+            let loc = locationTextField.text!
+            let _ = databaseController?.addTask(name: name, descript:descript, duedate: dueDate, location: loc, reminder: self.reminderSwitch.isOn)
             
             navigationController?.popViewController(animated: true)
             return

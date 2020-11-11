@@ -128,11 +128,13 @@ import FirebaseFirestoreSwift
         
     }
     
-    func addTask(name: String, duedate: String, reminder: Bool) -> Task {
+    func addTask(name: String, descript:String, duedate: String, location: String, reminder: Bool) -> Task {
         let task = Task()
         task.name = name
+        task.descript = descript
         task.duedate = duedate
         task.reminder = reminder
+        task.location = location
         task.tid = Auth.auth().currentUser!.uid
         
         
@@ -155,7 +157,9 @@ import FirebaseFirestoreSwift
             
             let task = Task()
             task.name = newtask.name
+            task.descript = newtask.descript
             task.duedate = newtask.duedate
+            task.location = newtask.location
             task.reminder = newtask.reminder
             task.tid = Auth.auth().currentUser!.uid
             

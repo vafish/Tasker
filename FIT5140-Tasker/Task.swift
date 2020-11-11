@@ -15,6 +15,8 @@ class Task: NSObject, Codable{
     var duedate:String=""
     var tid: String = ""
     var reminder: Bool?
+    var descript:String = ""
+    var location:String = ""
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -22,6 +24,8 @@ class Task: NSObject, Codable{
         case duedate
         case tid
         case reminder
+        case descript
+        case location
     }
 }
 

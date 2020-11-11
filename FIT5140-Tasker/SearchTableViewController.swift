@@ -10,14 +10,14 @@ import UIKit
 
 import MapKit
 
-protocol createTaskDelegate {
+protocol searchDelegate {
     func finishSearch(controller: SearchTableViewController)
     func cancelSearch(controller: SearchTableViewController)
 }
 
 class SearchTableViewController: UITableViewController, UISearchBarDelegate, CLLocationManagerDelegate, MKMapViewDelegate {
    
-    var delegate: createTaskDelegate! = nil
+    var delegate: searchDelegate! = nil
     var searchController:UISearchController?
     var selectedPin:MKPlacemark? = nil
     
@@ -28,6 +28,11 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, CLL
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white, NSAttributedString.Key.font: UIFont(name: "Helvetica Neue", size: 16)!]
+
+        
+       
         let locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -194,8 +199,13 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, CLL
         if let selectedPin = selectedPin {
             let mapItem = MKMapItem(placemark: selectedPin)
             let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
-            mapItem.openInMaps(launchOptions: launchOptions)
+            
+                mapItem.openInMaps(launchOptions: launchOptions)
+                    print("Planning rounte for you")
+                   
+            
         }
+        
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
@@ -204,6 +214,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, CLL
             
             return nil
         }
+        
         let reuseId = "pin"
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
         pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)

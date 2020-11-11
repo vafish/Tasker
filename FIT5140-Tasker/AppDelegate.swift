@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        _ = "3d34d6fa38b90d0afc3a65dfebaa7a4f8d916b67"
+        
         persistantContainer = NSPersistentContainer(name: "ImageModel")
         persistantContainer?.loadPersistentStores() { (description, error) in
             if let error = error {
@@ -36,7 +36,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("User has declined notifications")
             }
         }
-//        let center = UNUserNotificationCenter.current()
+        
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "Helvetica Neue", size: 14)! ],for: .normal)
+        UINavigationBar.appearance().barStyle = .black
+        UINavigationBar.appearance().isTranslucent = true
+        UINavigationBar.appearance().tintColor = .white
+        UILabel.appearance().font = UIFont(name: "Helvetica Neue", size: 15)
+        UITextField.appearance().font = UIFont(name: "Helvetica Neue", size: 13)
+      
+        //        let center = UNUserNotificationCenter.current()
 //
 //
 //           //Delegate for UNUserNotificationCenterDelegate

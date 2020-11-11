@@ -28,7 +28,7 @@ protocol DatabaseProtocol: AnyObject {
 //    var defaultTeam: Team {get}
     
     func cleanup()
-    func addTask(name: String, duedate: String, reminder: Bool) -> Task
+    func addTask(name: String, descript: String, duedate: String, location: String, reminder: Bool) -> Task
     func editTask(oldtask:Task, newtask:Task)-> Task
 //    func addTeam(teamName: String) -> Team
 //    func addHeroToTeam(hero: Task, team: Team) -> Bool
