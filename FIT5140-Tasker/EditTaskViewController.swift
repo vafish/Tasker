@@ -38,7 +38,7 @@ class EditTasklViewController: UIViewController, searchDelegate{
             nameTextField.text = task?.name
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy/MM/dd HH:mm"
-            datePicker.date =  dateFormatter.date(from: task!.duedate)!
+            datePicker.date =  dateFormatter.date(from: task!.duedate!)!
             descriptionTextField.text = task?.descript
             locationTextField.text = task?.location
             reminderSwitch.isOn = ((task?.reminder) == true)

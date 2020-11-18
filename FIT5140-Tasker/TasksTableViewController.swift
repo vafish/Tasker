@@ -23,9 +23,11 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
     var handle: AuthStateDidChangeListenerHandle?
     @IBOutlet weak var imageView: UIImageView!
     var managedObjectContext: NSManagedObjectContext?
-    let SECTION_TASKS = 0
-    let SECTION_INFO = 1
+    let SECTION_TASKS = 1
+    let SECTION_BUTTON = 0
     let CELL_TASK = "taskCell"
+    let CELL_BUTTON = "buttonCell"
+
     var allTasks: [Task] = []
     var filteredTasks: [Task] = []
     weak var taskDelegate: AddTaskDelegate?
@@ -46,7 +48,9 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search for Tasks"
+        searchController.searchBar.tintColor = .lightGray
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
         
         // This view controller decides how the search controller is presented
         definesPresentationContext = true
@@ -111,7 +115,29 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
     
 
     
-
+    @IBAction func NameSorting(_ sender: Any) {
+        let sorted = filteredTasks.sorted {
+            var isSorted = false
+            if let first = $0.name, let second = $1.name {
+                isSorted = first < second
+            }
+                return isSorted
+        }
+        filteredTasks = sorted
+        tableView.reloadData()
+    }
+    
+    @IBAction func DateSorting(_ sender: Any) {
+        let sorted = filteredTasks.sorted {
+            var isSorted = false
+            if let first = $0.duedate, let second = $1.duedate {
+                isSorted = first < second
+            }
+                return isSorted
+        }
+        filteredTasks = sorted
+        tableView.reloadData()
+    }
     
     @IBAction func Note(_ sender: Any) {
         setNotification()
@@ -143,7 +169,7 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
         for task in self.filteredTasks{
             
            
-                LocalNotificationManager.setNotification(5, of: .seconds, repeats: true, title: "Reminder", body: "You have a scheduled task: " + task.name, userInfo: [Auth.auth().currentUser?.uid  : ["hello" : Auth.auth().currentUser?.displayName ]], date: task.duedate)
+            LocalNotificationManager.setNotification(5, of: .seconds, repeats: true, title: "Reminder", body: "You have a scheduled task: " + task.name!, userInfo: [Auth.auth().currentUser?.uid  : ["hello" : Auth.auth().currentUser?.displayName ]], date: task.duedate!)
                 
             
             
@@ -160,12 +186,18 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return filteredTasks.count
+        if section == SECTION_TASKS {
+            return filteredTasks.count
+            }
+        
+        return 1
+        
+        
     }
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text?.lowercased() else {
@@ -174,7 +206,7 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
         
         if searchText.count > 0 {
             filteredTasks = allTasks.filter({ (hero: Task) -> Bool in
-                return hero.name.lowercased().contains(searchText) ?? false
+                return hero.name!.lowercased().contains(searchText)
             })
         } else {
             filteredTasks = allTasks
@@ -183,28 +215,35 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
         tableView.reloadData()
     }
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-      if editingStyle == .delete {
-        print("Deleted")
-        databaseController?.deleteTask(task: filteredTasks[indexPath.row])
-        self.filteredTasks.remove(at: indexPath.row)
-        self.tableView.deleteRows(at: [indexPath], with: .automatic)
-        
-      }
+        if indexPath.section == SECTION_TASKS{
+          if editingStyle == .delete {
+            print("Deleted")
+            databaseController?.deleteTask(task: filteredTasks[indexPath.row])
+            self.filteredTasks.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+          }
+            
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
-        let taskCell = tableView.dequeueReusableCell(withIdentifier: CELL_TASK,
-            for: indexPath) as! TaskTableViewCell
-        let task = filteredTasks[indexPath.row]
-        
-        taskCell.taskNameTextField.text = task.name
-        taskCell.dueDateTextField.text = task.duedate
+        if indexPath.section == SECTION_TASKS {
+            let taskCell = tableView.dequeueReusableCell(withIdentifier: CELL_TASK,
+                for: indexPath) as! TaskTableViewCell
+            let task = filteredTasks[indexPath.row]
             
-        return taskCell
+            taskCell.taskNameTextField.text = task.name
+            taskCell.dueDateTextField.text = task.duedate
+                
+            return taskCell
+        }
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: CELL_BUTTON, for: indexPath)
+        
+        return cell
+    
 
-        
     }
     
     override func tableView(_ tableView: UITableView,
@@ -298,7 +337,7 @@ class TasksTableViewController: UITableViewController, DatabaseListener, UISearc
                         let data = document.data()
                         let id = data["uid"]
                         if (id != nil && id as! String == userID) {
-                            self.title = "Hello" + (data["username"] as! String)
+                            self.title = "Hello " + (data["username"] as! String)
                             let url = data["imageUrl"]
                             guard let imageURL = URL(string: url as! String) else { return }
 

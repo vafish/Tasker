@@ -17,11 +17,17 @@ class AuthViewController: UIViewController {
     var databaseController:FirebaseController?
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var login: UIButton!
+    @IBOutlet weak var register: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        login.layer.cornerRadius = 5
+        login.layer.borderWidth = 1
+        login.layer.borderColor = UIColor.white.cgColor
+        register.layer.cornerRadius = 5
+        register.layer.borderWidth = 1
+        register.layer.borderColor = UIColor.white.cgColor
         // Do any additional setup after loading the view.
     }
     @IBAction func loginToAccount(_ sender: Any) {

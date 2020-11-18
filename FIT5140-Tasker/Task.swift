@@ -11,8 +11,8 @@ import UIKit
 class Task: NSObject, Codable{
 
     var id: String?
-    var name:String=""
-    var duedate:String=""
+    var name:String?
+    var duedate:String?
     var tid: String = ""
     var reminder: Bool?
     var descript:String = ""

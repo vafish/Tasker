@@ -29,7 +29,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, CLL
         
         super.viewDidLoad()
         
-        self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white, NSAttributedString.Key.font: UIFont(name: "Helvetica Neue", size: 16)!]
+//        self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white, NSAttributedString.Key.font: UIFont(name: "Helvetica Neue", size: 16)!]
 
         
        
@@ -46,9 +46,11 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, CLL
         searchController!.searchBar.delegate = self
         searchController!.obscuresBackgroundDuringPresentation = false
         searchController!.searchBar.placeholder = "Search for location"
+
+        
         present(searchController!, animated: true, completion: nil)
         navigationItem.searchController = searchController
-      
+        navigationItem.hidesSearchBarWhenScrolling = false
         
         searchController?.hidesNavigationBarDuringPresentation = false
         

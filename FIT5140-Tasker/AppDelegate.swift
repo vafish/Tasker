@@ -43,7 +43,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = .white
         UILabel.appearance().font = UIFont(name: "Helvetica Neue", size: 15)
         UITextField.appearance().font = UIFont(name: "Helvetica Neue", size: 13)
-      
+        UITableViewCell.appearance().backgroundColor = .gray
+        UIButton.appearance().setTitleColor(.systemGreen, for: .highlighted)
+     
+        
+        
+        
+//        let url = URL(string: "https://cdn.cocoacasts.com/cc00ceb0c6bff0d536f25454d50223875d5c79f1/above-the-clouds.jpg")!
+//        if let data = try? Data(contentsOf: url) {
+//                // Create Image and Update Image Vie
+//                let image = UIImage(data: data)
+//                UIButton.appearance().setBackgroundImage(image, for: .normal)
+//            }
+        
+        
         //        let center = UNUserNotificationCenter.current()
 //
 //

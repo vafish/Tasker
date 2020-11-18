@@ -18,6 +18,7 @@ class CreateTaskViewController: UIViewController, MKMapViewDelegate, CLLocationM
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var reminderSwitch: UISwitch!
     
+    @IBOutlet weak var search: UIButton!
     var databaseController: DatabaseProtocol?
     var locationManager:CLLocationManager!
     var resultSearchController:UISearchController? = nil
@@ -25,7 +26,9 @@ class CreateTaskViewController: UIViewController, MKMapViewDelegate, CLLocationM
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        search.layer.cornerRadius = 5
+        search.layer.borderWidth = 1
+        search.layer.borderColor = UIColor.white.cgColor
         databaseController = FirebaseController()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
 
